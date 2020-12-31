@@ -54,7 +54,7 @@ contract UniswapV2Factory is IUniswapV2Factory {
         require(msg.sender == feeToSetter, 'UniswapV2: FORBIDDEN');
         feeToSetter = _feeToSetter;
     }
-
+    // A function that allows owner to withdraw stuck ERC20 tokens transferred via `transfer` function
     function rescueERC20(address _token_contract, uint _amount) external {
         require(msg.sender == feeToSetter, 'UniswapV2: FORBIDDEN');
         _safeTransfer(_token_contract, msg.sender, _amount);
