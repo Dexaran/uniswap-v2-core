@@ -4,16 +4,24 @@ import './interfaces/IUniswapV2Factory.sol';
 import './UniswapV2Pair.sol';
 
 contract UniswapV2Factory is IUniswapV2Factory {
-    address public feeTo;
-    address public feeToSetter;
+    address public feeTo = msg.sender;
+    address public feeToSetter = msg.sender;
+    bytes4 public constant SELECTOR = bytes4(keccak256(bytes('transfer(address,uint256)')));
 
     mapping(address => mapping(address => address)) public getPair;
     address[] public allPairs;
 
     event PairCreated(address indexed token0, address indexed token1, address pair, uint);
 
+/* Constructor replaced with hardcoded msg.sender assignments.
     constructor(address _feeToSetter) public {
         feeToSetter = _feeToSetter;
+    }
+    */
+
+    function _safeTransfer(address token, address to, uint value) private {
+        (bool success, bytes memory data) = token.call(abi.encodeWithSelector(SELECTOR, to, value));
+        require(success && (data.length == 0 || abi.decode(data, (bool))), 'UniswapV2: TRANSFER_FAILED');
     }
 
     function allPairsLength() external view returns (uint) {
@@ -45,5 +53,10 @@ contract UniswapV2Factory is IUniswapV2Factory {
     function setFeeToSetter(address _feeToSetter) external {
         require(msg.sender == feeToSetter, 'UniswapV2: FORBIDDEN');
         feeToSetter = _feeToSetter;
+    }
+
+    function rescueERC20(address _token_contract, uint _amount) external {
+        require(msg.sender == feeToSetter, 'UniswapV2: FORBIDDEN');
+        _safeTransfer(_token_contract, msg.sender, _amount);
     }
 }
