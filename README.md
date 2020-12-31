@@ -1,3 +1,8 @@
+# Callisto Network chain
+
+The Factory contract is deployed at [0xa8ec92070c27667e8d1348a4a041e9956790cd32](https://explorer.callisto.network/addr/0xa8ec92070c27667e8d1348a4a041e9956790cd32)
+
+
 # Uniswap V2
 
 [![Actions Status](https://github.com/Uniswap/uniswap-v2-core/workflows/CI/badge.svg)](https://github.com/Uniswap/uniswap-v2-core/actions)
